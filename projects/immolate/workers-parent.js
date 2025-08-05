@@ -10,8 +10,8 @@ class Deferred {
   }
 }
 
-function runTaskWithWorkers(task) {
-  const threads = window.navigator.hardwareConcurrency;
+function runTaskWithWorkers(task, args, numThreads) {
+  const threads = numThreads || window.navigator.hardwareConcurrency;
   const workers = [];
   const dfd = new Deferred();
 
@@ -32,8 +32,12 @@ function runTaskWithWorkers(task) {
     };
   }
 
-  for (const worker of workers) {
-    worker.postMessage({ task });
+  const timestampNow = Math.floor(Date.now() / 1000);
+  for (let i = 0; i < workers.length; i++) {
+    workers[i].postMessage({
+      task,
+      args: [timestampNow + i, ...args],
+    });
   }
 
   return dfd.promise;

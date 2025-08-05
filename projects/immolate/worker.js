@@ -1,4 +1,5 @@
 let task;
+let args;
 
 self.Immolate = {
   onRuntimeInitialized: function () {
@@ -10,9 +11,17 @@ importScripts("immolate.js", "tasks.js");
 
 function onImmolateInitialized() {
   switch (task) {
-    case "perkTribObs": {
+    case "perkTribObs(JS)": {
       const result = perkTribObs();
       postMessage({ task, result });
+      break;
+    }
+    case "perkTribObs(WASM)": {
+      const result = self.Immolate.perkTribObs(...args);
+      postMessage({
+        task,
+        result: [result.tries, result.seed, result.voucherAntes, result.time],
+      });
       break;
     }
     default: {
@@ -23,4 +32,5 @@ function onImmolateInitialized() {
 
 onmessage = async ({ data }) => {
   task = data.task;
+  args = data.args;
 };
