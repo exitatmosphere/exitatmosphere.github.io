@@ -11,11 +11,6 @@ importScripts("immolate.js", "tasks.js");
 
 function onImmolateInitialized() {
   switch (task) {
-    case "perkTribObs(JS)": {
-      const result = perkTribObs();
-      postMessage({ task, result });
-      break;
-    }
     case "perkTribObs(WASM)": {
       const result = self.Immolate.perkTribObs(...args);
       postMessage({
