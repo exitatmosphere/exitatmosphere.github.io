@@ -7,16 +7,32 @@ self.Immolate = {
   },
 };
 
-importScripts("immolate.js", "tasks.js");
+importScripts("immolate.js");
 
 function onImmolateInitialized() {
   switch (task) {
-    case "perkTribObs(WASM)": {
-      const result = self.Immolate.perkTribObs(...args);
+    case "perkTribVouchers": {
+      const vouchersVec = new self.Immolate.VectorStr();
+      args[2].forEach((voucher) => vouchersVec.push_back(voucher));
+      args[2] = vouchersVec;
+
+      const result = self.Immolate.perkTribVouchers(...args);
+      const voucherAntesVec = result.voucherAntes;
+      const voucherAntesArray = [];
+      for (let i = 0; i < voucherAntesVec.size(); i++) {
+        voucherAntesArray.push(voucherAntesVec.get(i));
+      }
       postMessage({
         task,
-        result: [result.tries, result.seed, result.voucherAntes, result.time],
+        result: [
+          result.tries,
+          result.seed,
+          result.legendariesPacks,
+          voucherAntesArray,
+          result.time,
+        ],
       });
+
       break;
     }
     default: {
