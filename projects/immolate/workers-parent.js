@@ -21,7 +21,15 @@ function runTaskWithWorkers(task, args, numThreads) {
 
     newWorker.onmessage = (msg) => {
       const msgData = msg.data;
-      console.log(`Task: ${msgData.task}\nResult: ${msgData.result}`);
+      const msgTask = msgData.task;
+      const msgResult = msgData.result;
+      console.log(`Task: ${msgData.task}`);
+      console.log(`Result:`);
+      console.log(`-------------------------`);
+      for (const resultEntry of Object.entries(msgResult)) {
+        console.log(`${resultEntry[0]}: ${resultEntry[1]}`);
+      }
+      console.log(`-------------------------`);
 
       for (const worker of workers) {
         worker.terminate();
