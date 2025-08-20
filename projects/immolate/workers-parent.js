@@ -23,7 +23,7 @@ function runTaskWithWorkers(task, args, numThreads) {
       const msgData = msg.data;
       const msgTask = msgData.task;
       const msgResult = msgData.result;
-      console.log(`Task: ${msgData.task}`);
+      console.log(`Task: ${msgTask}`);
       console.log(`Result:`);
       console.log(`-------------------------`);
       for (const resultEntry of Object.entries(msgResult)) {

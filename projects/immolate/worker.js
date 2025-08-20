@@ -14,10 +14,10 @@ function onImmolateInitialized() {
     case "findSeed": {
       const srandSeed = args[0];
 
-      const jokersToFindOneOf = new self.Immolate.VectorStr();
-      args[1].forEach((joker) => jokersToFindOneOf.push_back(joker));
-      const jokerToFindNegative = args[2];
-      const jokerToFindAnkh = args[3];
+      const jokersPackToFindOneOf = new self.Immolate.VectorStr();
+      args[1].forEach((joker) => jokersPackToFindOneOf.push_back(joker));
+      const jokerPackToFindNegative = args[2];
+      const jokerPackToFindAnkh = args[3];
 
       const legendariesToFind = new self.Immolate.VectorStr();
       args[4].forEach((legendary) => legendariesToFind.push_back(legendary));
@@ -28,16 +28,22 @@ function onImmolateInitialized() {
       args[7].forEach((voucher) => vouchersToFind.push_back(voucher));
       const vouchersToFindMaxAnte = args[8];
 
+      const jokersShopToFind = new self.Immolate.VectorStr();
+      args[9].forEach((joker) => jokersShopToFind.push_back(joker));
+      const jokersShopToFindMaxAnte = args[10];
+
       const result = self.Immolate.findSeed(
         srandSeed,
-        jokersToFindOneOf,
-        jokerToFindNegative,
-        jokerToFindAnkh,
+        jokersPackToFindOneOf,
+        jokerPackToFindNegative,
+        jokerPackToFindAnkh,
         legendariesToFind,
         legendariesToFindNegatives,
         legendariesToFindMaxAnte,
         vouchersToFind,
-        vouchersToFindMaxAnte
+        vouchersToFindMaxAnte,
+        jokersShopToFind,
+        jokersShopToFindMaxAnte
       );
 
       const legendariesPacksVec = result.legendariesPacks;
@@ -52,6 +58,12 @@ function onImmolateInitialized() {
         voucherAntesArray.push(voucherAntesVec.get(i));
       }
 
+      const jokerShopIdsVec = result.jokerShopIds;
+      const jokerShopIdsArray = [];
+      for (let i = 0; i < jokerShopIdsVec.size(); i++) {
+        jokerShopIdsArray.push(jokerShopIdsVec.get(i));
+      }
+
       postMessage({
         task,
         result: {
@@ -59,6 +71,7 @@ function onImmolateInitialized() {
           seed: result.seed,
           legendariesPacks: legendariesPacksArray,
           voucherAntes: voucherAntesArray,
+          jokerShopIds: jokerShopIdsArray,
           time: result.time,
         },
       });
